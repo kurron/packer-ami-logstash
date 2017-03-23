@@ -1,6 +1,7 @@
 # Overview
 This project creates an [Amazon Machine Image](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) with
-MongoDB pre-installed and ready to be joined to a replica set.
+[Logstash](https://www.elastic.co/products/logstash) pre-installed and ready to be connected to
+[Amazon Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/).
 
 # Prerequisites
 * a working [Packer](https://www.packer.io/) installation
@@ -31,27 +32,6 @@ The playbook reuses logic from [open source Ansible roles](https://galaxy.ansibl
 playbooks to learn exactly how certain aspects of the plays are configured.
 
 # Troubleshooting
-
-## Packer and Ansible Coordination
-Creating the AMI requires that two different tools coordinate with each other.  In particular,
-when creating and manipulating the EBS storage volumes.  Packer is where the volumes are created
-and Ansible is where they are formatted.  You need to ensure that both the `mongodb.json` and
-`playbook.yml` files are in harmony with each other or failures will occur.
-
-## MongoDB Will Not Start
-One place to look is to verify that `/var/run/mongodb` exists.  That is where MongoDB stores its PID
-file and that directory does not exist on a new EC2 instance.  We have adjusted the systemd configuration
-to recreate the directory prior to MongoDB starting.  If, for some reason, you need to run the steps by
-hand, this is what the script does:
-
-```
-#!/bin/bash
-
-mkdir -p /var/run/mongodb
-chown mongod:mongod /var/run/mongodb
-```
-
-This should create the missing directory.
 
 # License and Credits
 This project is licensed under the [Apache License Version 2.0, January 2004](http://www.apache.org/licenses/).

@@ -1,6 +1,6 @@
 {
-    "name": "MongoDB",
-    "purpose": "MongoDB replica set member",
+    "name": "Logstash",
+    "purpose": "Forward log messages to Elasticsearch",
     "project": "Weapon-X",
     "creator": "Packer",
     "environment": "production",

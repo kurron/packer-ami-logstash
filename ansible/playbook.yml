@@ -4,12 +4,27 @@
 
   roles:
       - { role: kurron.time }
-      - { role: kurron.os-limits }
-      - { role: kurron.transparent-huge-pages }
-      - { role: kurron.block-device, bd_block_device: /dev/xvdf, bd_mount_point: /var/lib/mongo, bd_label: MONGODB }
-      - { role: kurron.mongodb }
+      # TODO: figure out how how to have Packer supply the Elasticsearch coordinates
+      - { role: kurron.logstash, elastic_elasticsearch_host: search-phoenix-i43nf624oy3q6kba3zomjljrwq.us-west-2.es.amazonaws.com, elastic_elasticsearch_port: 80 }
 
   post_tasks:
-      - name: Print partition information
-        command: /usr/sbin/parted /dev/xvdf print
+      - name: Test Syslog
+        command: "logger --server localhost --port 5514 --priority 0  --tag test 'Hello, World!'"
+        become: no
+
+      - name: Install Netcat
         become: yes
+        yum:
+            name: nc
+            state: present
+            update_cache: yes
+        when: (ansible_distribution == "RedHat")
+
+      - name: Install Netcat
+        become: yes
+        apt:
+            name: nc
+            update_cache: no
+            state: present
+            allow_unauthenticated: no
+        when: (ansible_distribution == "Ubuntu")

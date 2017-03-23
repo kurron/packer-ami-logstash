@@ -1,11 +1,11 @@
 {
-    "description": "Builds a RHEL 7 (maipo) server x64 AMI with MongoDB pre-installed",
+    "description": "Builds a RHEL 7 (maipo) server x64 AMI with Logstash pre-installed",
     "min_packer_version": "0.12.2",
 
     "builders": [{
         "type": "amazon-ebs",
-        "ami_name": "mongodb-{{timestamp}}",
-        "ami_description": "AMI with MongoDB pre-installed",
+        "ami_name": "logstash-{{timestamp}}",
+        "ami_description": "AMI with Logstash pre-installed",
         "associate_public_ip_address": true,
         "instance_type": "{{ user `instance_type` }}",
         "region": "{{ user `region` }}",
@@ -22,25 +22,7 @@
           "Creator": "{{ user `creator` }}",
           "Environment": "{{ user `environment` }}",
           "Freetext": "{{ user `notes` }}"
-        },
-        "ami_block_device_mappings": [
-            {
-                "device_name": "/dev/xvdf",
-                "delete_on_termination": false,
-                "encrypted": false,
-                "volume_size": 16,
-                "volume_type": "gp2"
-            }
-        ],
-        "launch_block_device_mappings": [
-            {
-                "device_name": "/dev/xvdf",
-                "delete_on_termination": false,
-                "encrypted": false,
-                "volume_size": 16,
-                "volume_type": "gp2"
-            }
-        ]
+        }
     }],
     "provisioners": [
         {
